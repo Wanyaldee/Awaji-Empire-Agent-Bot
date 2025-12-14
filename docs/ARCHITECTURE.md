@@ -1,4 +1,19 @@
 
+**⏰ 最終自動更新日時: 2025年12月14日 15:03 JST**
+
+---
+### ⚙️ FilteringCog コグ機能 (`filter.py`)
+
+#### 実行メソッド/タスク:
+* **イベント**: `on_message` (Discordイベントフック)
+### ⚙️ MassMuteCog コグ機能 (`mass_mute.py`)
+
+#### 実行メソッド/タスク:
+* **タスク**: `before_daily_mute_check` (定時実行)
+* **タスク**: `daily_mute_check` (定時実行)
+* **イベント**: `on_guild_channel_create` (Discordイベントフック)
+* **イベント**: `on_ready` (Discordイベントフック)
+
 **⏰ 最終自動更新日時: 2025年12月14日 14:47 JST**
 
 ---
