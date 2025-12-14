@@ -1,0 +1,33 @@
+name: CI/CD Pipeline
+
+# どのイベントでこのワークフローを実行するかを定義
+on:
+  push:
+    branches:
+      - master # masterブランチにプッシュされたときに実行
+  pull_request:
+    branches:
+      - master
+
+# 実行するジョブの定義
+jobs:
+  build:
+    # VMではなく、GitHubが用意する仮想環境（ここではUbuntuの最新版）で実行
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. リポジトリのコードをチェックアウト
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Python環境のセットアップ（バージョンを指定）
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # 3. 動作確認のためのメッセージ（ここは後でLinterやテストに置き換えます）
+      - name: Display environment
+        run: |
+          echo "GitHub Actions環境でPythonのセットアップが完了しました。"
+          python --version
