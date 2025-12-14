@@ -1,18 +1,3 @@
-
-**⏰ 最終自動更新日時: 2025年12月14日 14:27 JST**
-
----
-### ⚙️ FilteringCog コグ機能 (`filter.py`)
-
-#### 実行メソッド/タスク:
-* **イベント**: `on_message` (Discordイベントフック)
-### ⚙️ MassMuteCog コグ機能 (`mass_mute.py`)
-
-#### 実行メソッド/タスク:
-* **タスク**: `before_daily_mute_check` (定時実行)
-* **タスク**: `daily_mute_check` (定時実行)
-* **イベント**: `on_guild_channel_create` (Discordイベントフック)
-* **イベント**: `on_ready` (Discordイベントフック)
 # ⚙️ Awaji Empire Agent Bot - 詳細設計と運用ドキュメント
 
 ## 1. システム全体設計（データフロー）
@@ -27,7 +12,7 @@
 | **`cogs/mass_mute.py`** | チャンネル作成フック、定時タスク。 | Discord API, `bot.py` (DM送信)。 | チャンネル権限（`@everyone`）を操作し、通知ミュートを適用。 |
 
 ## 2. コア機能の詳細設計
-
+  
 ### 2.0. 今後の機能拡張に関する設計方針
 
 Botの安定性と保守性を維持するため、以下の設計方針を遵守します。
