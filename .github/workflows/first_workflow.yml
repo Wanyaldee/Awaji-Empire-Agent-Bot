@@ -2,6 +2,7 @@
 
 name: CI/CD Pipeline
 
+# プッシュとプルリクエスト時に実行
 on:
   push:
     branches:
@@ -11,9 +12,11 @@ on:
       - master
 
 jobs:
-  build_and_document: # ジョブ名を変更
+  # ----------------------------------------------------
+  # 1. build_and_test: 従来のCIチェック（ビルド確認）
+  # ----------------------------------------------------
+  build_and_test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,20 +26,43 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install dependencies (必要であれば、`pip install discord.py`などをここに記述)
+      - name: Display environment check
         run: |
-          # 仮想環境ではないため、依存関係があればここにインストールコマンドを追記
+          echo "CI環境でのPythonのセットアップが完了しました。"
+          python --version
+          # 🚨 ここに依存関係インストールや自動テストを追記可能
+
+  # ----------------------------------------------------
+  # 2. update_document: ドキュメントの自動生成とコミット
+  # ----------------------------------------------------
+  update_document:
+    # build_and_testジョブが成功した後にのみ実行
+    needs: build_and_test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        # Actionsがコミットするために、fetch-depth: 0 を指定
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
 
       - name: Generate and update ARCHITECTURE.md
+        # doc_generator.py を実行し、ドキュメントを更新
         run: |
-          # 作成した Python スクリプトを実行
           python doc_generator.py
 
       - name: Commit and push updated document (自動コミット)
-        # stefanzweifel/git-auto-commit-action を使用して変更を自動でコミット
+        # stefanzweifel/git-auto-commit-action を使用
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          # doc_generator.py と更新された ARCHITECTURE.md の変更をコミット
-          commit_message: 'docs: Auto update functional details after code change'
+          commit_message: 'docs: Auto update functional details via CI'
+          # doc_generator.py の変更も記録
           file_pattern: 'doc_generator.py docs/ARCHITECTURE.md'
-          # GitHub Actionsが自動で提供するトークンを使用
+          # この自動コミットではCIを再トリガーしないように設定
+          skip_ci: true

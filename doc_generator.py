@@ -8,8 +8,8 @@ TARGET_COGS = ["cogs/filter.py", "cogs/mass_mute.py"]
 ARCH_PATH = "docs/ARCHITECTURE.md"
 
 # 自動生成セクションの開始と終了を識別するためのマーカー（これがないと文書全体が上書きされる）
-START_MARKER = ""
-END_MARKER = ""
+START_MARKER = ""  # <-- ここに文字列を挿入
+END_MARKER = ""      # <-- ここに文字列を挿入
 # -----------------
 
 def extract_cog_details(file_path):
