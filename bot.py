@@ -1,90 +1,91 @@
-# /discord_bot/bot.py
-
 import discord
 from discord.ext import commands
-import traceback
-import sys
-import os
-
-# config.pyから設定をインポート
+import asyncio
+# 🚨 修正点: configから DISCORD_BOT_TOKEN のインポートを削除 🚨
 from config import ADMIN_USER_ID
 
-# ----------------------------------------------------
-# DM送信関数: メインファイルに集約
-# ----------------------------------------------------
-async def send_admin_dm(bot, title, description, color):
-    """管理者ユーザーにDMでログを送信する関数"""
+# コグ（拡張機能）のリスト
+COGS = [
+    "cogs.filter",
+    "cogs.mass_mute"
+]
+
+# Botのインスタンスを作成
+intents = discord.Intents.default()
+intents.members = True 
+intents.message_content = True 
+bot = commands.Bot(command_prefix='!', intents=intents)
+
+async def load_cogs():
+    """定義されたコグをロードする"""
+    for cog_name in COGS:
+        try:
+            await bot.load_extension(cog_name)
+            print(f"LOADED: {cog_name} をロードしました。")
+        except Exception as e:
+            print(f"ERROR: {cog_name} のロードに失敗しました。")
+            print(f"Traceback: {e}")
+
+@bot.event
+async def on_ready():
+    """BotがDiscordに接続を完了したときに実行される"""
+    print('-------------------------------------')
+    print('Bot Name: {0.user.name}'.format(bot))
+    print('Bot ID: {0.user.id}'.format(bot))
+    print('-------------------------------------')
+    
+    # 起動完了DMを管理者へ送信
+    owner = None
     try:
-        # fetch_userでユーザーオブジェクトを取得
-        admin_user = await bot.fetch_user(ADMIN_USER_ID)
-        if admin_user:
-            embed = discord.Embed(title=title, description=description, color=color)
-            await admin_user.send(embed=embed)
+        owner_id_int = int(ADMIN_USER_ID)
+        owner = await bot.fetch_user(owner_id_int) 
+    except ValueError:
+        print(f"Error: ADMIN_USER_ID '{ADMIN_USER_ID}' is not a valid integer string.")
+    except discord.NotFound:
+        print(f"Error: Owner user with ID {ADMIN_USER_ID} not found.")
     except Exception as e:
-        # DM送信自体が失敗した場合、コンソールにエラー出力
-        print(f"DM送信中にエラーが発生しました: {e}", file=sys.stderr)
-        traceback.print_exc(file=sys.stderr)
+        print(f"Error fetching owner user in on_ready: {e}")
 
-# ----------------------------------------------------
-# Botの設定と起動
-# ----------------------------------------------------
+    if owner:
+        try:
+            embed = discord.Embed(
+                title="Bot起動完了",
+                description=f"Bot **{bot.user.name}** が正常に起動しました。",
+                color=0x4caf50 
+            )
+            await owner.send(embed=embed)
+            print("Startup DM sent to owner.")
+        except Exception as e:
+            print(f"Failed to send startup DM to owner: {e}")
+    else:
+        print("Warning: Owner user not found or ID is invalid. Could not send startup DM.")
+    
+    await load_cogs()
 
-class AwajiEmpireAgentBot(commands.Bot):
-    def __init__(self):
-        # 必要なインテントを設定 (on_message, on_member_join, on_guild_channel_createなどに必須)
-        intents = discord.Intents.default()
-        intents.message_content = True
-        intents.members = True
-
-        super().__init__(
-            command_prefix='!',
-            intents=intents,
-            help_command=None
-        )
-
-    async def on_ready(self):
-        print('-------------------------------------')
-        print(f'Bot Name: {self.user.name}')
-        print(f'Bot ID:   {self.user.id}')
-        print('-------------------------------------')
-
-        # コグのロード
-        await self.load_cogs()
-
-        # 管理者DMに起動を通知
-        await send_admin_dm(
-            self,
-            title="Bot 起動完了",
-            description=f"Bot **{self.user.name}** が正常に起動しました。",
-            color=discord.Color.blue()
-        )
-
-    async def load_cogs(self):
-        cogs_dir = 'cogs'
-        for filename in os.listdir(cogs_dir):
-            if filename.endswith('.py') and not filename.startswith('__'):
-                cog_name = f'{cogs_dir}.{filename[:-3]}'
-                try:
-                    await self.load_extension(cog_name)
-                    print(f'LOADED: {cog_name} をロードしました。')
-                except Exception as e:
-                    print(f'ERROR: {cog_name} のロードに失敗しました。', file=sys.stderr)
-                    print(f'{e}', file=sys.stderr)
-                    traceback.print_exc(file=sys.stderr)
-
-# メイン実行ブロック
-if __name__ == "__main__":
+def get_token_from_file(filename="token.txt"):
+    """token.txtファイルからトークンを読み込む"""
     try:
-        # トークンの読み込み
-        with open('token.txt', 'r') as f:
-            TOKEN = f.read().strip()
-
-        bot = AwajiEmpireAgentBot()
-        bot.run(TOKEN)
+        with open(filename, 'r') as f:
+            # ファイルの最初の行から空白を除去してトークンを取得
+            token = f.read().strip()
+            return token
     except FileNotFoundError:
-        print("[FATAL ERROR] 'token.txt' が見つかりません。", file=sys.stderr)
-        sys.exit(1)
+        print(f"Error: Token file '{filename}' not found.")
+        return None
     except Exception as e:
-        print(f"[FATAL ERROR] Botの実行中に予期せぬエラーが発生しました: {e}", file=sys.stderr)
-        traceback.print_exc(file=sys.stderr)
-        sys.exit(1)
+        print(f"Error reading token file: {e}")
+        return None
+
+if __name__ == '__main__':
+    bot_token = get_token_from_file()
+    
+    if bot_token:
+        try:
+            # bot.runはブロッキング関数
+            bot.run(bot_token)
+        except discord.LoginFailure:
+            print("Error: Invalid token in token.txt")
+        except Exception as e:
+            print(f"An unexpected error occurred during bot execution: {e}")
+    else:
+        print("Bot execution aborted due to missing or invalid token.")
