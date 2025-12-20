@@ -94,6 +94,7 @@ CREATE TABLE survey_responses (
     answered_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (survey_id) REFERENCES surveys(id) ON DELETE CASCADE
 );
+```
 
 ## 更新履歴 (2025-12-20)
 
@@ -112,3 +113,4 @@ Discord認証を用いたWeb管理ダッシュボードの実装およびネッ�
 
 ```sql
 ALTER TABLE surveys ADD COLUMN owner_id VARCHAR(255) DEFAULT NULL;
+```
