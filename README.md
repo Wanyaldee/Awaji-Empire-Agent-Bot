@@ -2,7 +2,7 @@
 
 ## 1. 概要
 
-本プロジェクトは、Discordサーバーの管理と監視を目的とした Bot です。特に、特定のチャンネルへの不正な投稿のフィルタリングと、メンバーへの通知負荷を軽減するためのチャンネル権限管理（マスミュート）機能を自動化します。また、これらは簡単に機能追加が可能となっています。このプロジェクトはMITライセンスの下、自由にお使いいただけます。
+本プロジェクトは、Discordサーバーの管理と監視を目的とした Bot です。特に、特定のチャンネルへの不正な投稿のフィルタリングと、メンバーへの通知負荷を軽減するためのチャンネル権限管理（マスミュート）機能を自動化します。また、これらは簡単に機能追加が可能となっています。このプロジェクトはMITライセンスの下、自由にお使いいただけます。本プロジェクトの更新情報は、READMEに随時追加していきます。
 
 ## 2. 🌟 主要機能
 
@@ -76,6 +76,24 @@ Botのコードは、高い保守性を保つため、コア、設定、機能�
 > [**➡️ 詳細設計と運用ドキュメント (ARCHITECTURE.md) へ**](./docs/ARCHITECTURE.md)
 ---
 
+##  更新履歴 (2025-12-20)
+- **Webダッシュボードの改善:** HTMLとJavaScriptを分離し、保守性を向上させました。
+- **回答機能の実装:** Discord上で対話形式（ウィザード）でアンケートに回答できるようになりました。
+- **Cloudflare Tunnel対応:** `cloudflared` を導入し、セキュアな外部公開に対応しました。
+
+### 🛠️ データベース設定 (追加)
+回答データを保存するために、以下のテーブルが必要です。
+
+```sql
+CREATE TABLE survey_responses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    survey_id INT NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
+    user_name VARCHAR(255),
+    answers JSON,
+    answered_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (survey_id) REFERENCES surveys(id) ON DELETE CASCADE
+);
 
 ## 更新履歴 (2025-12-20)
 
