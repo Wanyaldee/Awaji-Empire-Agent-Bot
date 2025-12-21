@@ -66,7 +66,7 @@ python webapp.py
 ## 更新内容
 詳細な更新内容は[CHANGELOG.md](./CHANGELOG.md)
 
-##📜 ライセンス
+## 📜 ライセンス
 このプロジェクトは MIT ライセンスの下で公開されています。
 
 © 2025 Awaji Empire Technical Department
