@@ -3,22 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> ログイン - Awaji Empire Agent Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>ログイン - Awaji Empire Agent</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ css_ver }}">
 </head>
 <body class="auth-page">
     <div class="auth-container">
-        <div class="icon-float">👺</div>
-        
-        <h1 class="auth-title">AWAJI EMPIRE AGENT</h1>
-        <p class="auth-desc">
-            淡路帝国 執務システム<br>
-            関係者以外ノ立チ入リヲ禁ズ
-        </p>
-
-        <a href="{{ auth_url }}" class="auth-btn">
-            Discordでログイン ➔
-        </a>
+        <h1>👺 AWAJI EMPIRE</h1>
+        <p style="color:#ccc;">淡路帝国 執務システム</p>
+        <a href="{{ auth_url }}" class="auth-btn">Discordでログイン ➔</a>
     </div>
 </body>
 </html>

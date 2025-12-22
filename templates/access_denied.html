@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Access Denied - Awaji Empire Agent Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ css_ver }}">
 </head>
 <body class="auth-page">
     <div class="auth-container">
@@ -18,12 +18,12 @@
         </p>
 
         <div class="guide-box">
-            <h3 style="color:#fff; margin-top:0; border-bottom:1px solid #411; padding-bottom:5px;">⛩️ 入国する方法</h3>
+            <h3 class="guide-header">⛩️ 入国する方法</h3>
             
             <div class="guide-item">
                 <span class="guide-highlight">YouTubeメンバーシップ</span>
                 「しゃちくてんぐ」のメンバーシップへ加入すると、特典として招待される場合があります。
-                <a href="https://www.youtube.com/@Shachiten_private" target="_blank" class="auth-btn" style="font-size:0.9rem; padding:10px;">
+                <a href="https://www.youtube.com/@Shachiten_private" target="_blank" class="auth-btn">
                     YouTubeへ飛ぶ 🪶
                 </a>
             </div>
@@ -31,13 +31,13 @@
             <div class="guide-item">
                 <span class="guide-highlight">ツイキャスの気まぐれ</span>
                 社畜天狗が配信中に、気まぐれに招待リンクを貼ることがあります。その時を逃さず参加してください。
-                <a href="https://twitcasting.tv/shachiku_tengu" target="_blank" class="auth-btn" style="font-size:0.9rem; padding:10px;">
+                <a href="https://twitcasting.tv/shachiku_tengu" target="_blank" class="auth-btn">
                     ツイキャスをチェック 👁️
                 </a>
             </div>
         </div>
 
-        <a href="/logout" class="auth-sub-link">別のアカウントでログインし直す</a>
+        <a href="/logout" class="sub-link">別のアカウントでログインし直す</a>
     </div>
 </body>
 </html>

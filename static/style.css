@@ -1,484 +1,163 @@
-/* --- 画像の内容を再現 --- */
-body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    padding: 20px;
-    background-color: #f5f7fa;
-    color: #333;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    background: white;
-    padding: 30px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    border-radius: 8px;
-}
-
-h1 {
-    border-bottom: 2px solid #eee;
-    padding-bottom: 15px;
-    margin-bottom: 30px;
-    color: #2c3e50;
-}
-
-h2 {
-    color: #34495e;
-    margin-bottom: 15px;
-    border-left: 5px solid #3498db;
-    padding-left: 10px;
-}
-
-/* テーブル設定 */
-table {
-    border-collapse: collapse;
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-th, td {
-    border: 1px solid #e1e4e8;
-    padding: 12px 15px;
-    text-align: left;
-    vertical-align: middle;
-}
-
-th {
-    background-color: #f8f9fa;
-    font-weight: bold;
-    color: #555;
-}
-
-tr:hover {
-    background-color: #f1f1f1;
-}
-
-/* バッジ */
-.status-badge {
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.85em;
-    font-weight: bold;
-    color: white;
-    display: inline-block;
-}
-
-.status-badge.active { background-color: #2ecc71; } /* 緑 */
-.status-badge.closed { background-color: #95a5a6; } /* グレー */
-
-/* ボタン共通 */
-.btn {
-    padding: 8px 16px;
-    text-decoration: none;
-    border-radius: 4px;
-    font-weight: bold;
-    display: inline-block;
-    font-size: 0.9em;
-    transition: background-color 0.2s;
-    border: none;
-    cursor: pointer;
-    color: white;
-}
-
-.actions .btn { margin-right: 5px; margin-bottom: 5px; }
-
-.btn-green { background-color: #27ae60; }
-.btn-green:hover { background-color: #219150; }
-
-.btn-orange { background-color: #f39c12; }
-.btn-orange:hover { background-color: #d35400; }
-
-.btn-gray { background-color: #7f8c8d; }
-.btn-gray:hover { background-color: #2c3e50; }
-
-.btn-blue { background-color: #3498db; }
-.btn-blue:hover { background-color: #2980b9; }
-
-/* フォーム周り */
-.form-group { margin-bottom: 20px; }
-.form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
-.form-group input[type="text"],
-.form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1em;
-    box-sizing: border-box;
-}
-
-.button-group { margin-top: 30px; display: flex; gap: 10px; }
-
-.no-data {
-    color: #7f8c8d;
-    font-style: italic;
-    padding: 20px;
-    text-align: center;
-    background: #f9f9f9;
-    border-radius: 4px;
-}
-
-/* --- 追加: ログイン画面用の修正 --- */
-/* ログイン画面の背景を暗くし、中央寄せにする */
-body.login-page {
-    background-color: #2c3e50; /* 暗い背景 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-}
-
-/* ログイン画面のタイトル文字色を白にする */
-.login-title {
-    color: #ffffff !important;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-}
-
-/* ログインカードの調整 */
-.login-card {
-    background: white;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    width: 400px;
-    text-align: center;
-}
-.login-card h3 {
-    /* カード内の見出しは元の色に戻す */
-    color: #2c3e50; 
-}
-
-
-/* --- ここから下を追記：スマホ用レスポンシブ設定 --- */
-
-@media screen and (max-width: 768px) {
-    /* 1. 全体の幅と余白をスマホ用に */
-    .container {
-        width: 95%;
-        padding: 10px;
-        margin-top: 20px;
-    }
-    
-    /* 2. テーブルの強制解除（表組みをやめてブロック積みにする） */
-    table, thead, tbody, th, td, tr {
-        display: block;
-    }
-
-    /* PC用のヘッダー行（ID, タイトル...）を隠す */
-    thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-
-    /* 3. 各行（tr）を「カード」のような見た目にする */
-    tbody tr {
-        background-color: #2c2f33; /* カード背景色 */
-        border: 1px solid #444;
-        border-radius: 10px;
-        margin-bottom: 20px; /* カード間の隙間 */
-        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        padding: 10px;
-    }
-
-    /* 4. 各セル（td）の設定 */
-    td {
-        border: none;
-        border-bottom: 1px solid #40444b;
-        position: relative;
-        padding-left: 40%; /* 左側にラベル用の隙間を作る */
-        text-align: right; /* 中身は右寄せ */
-        padding-top: 10px;
-        padding-bottom: 10px;
-        min-height: 30px;
-        color: #fff;
-    }
-
-    td:last-child {
-        border-bottom: none;
-        padding-left: 0;
-        text-align: center; /* ボタンエリアは中央寄せ */
-        padding-top: 15px;
-    }
-
-    /* 5. CSSだけで見出しを挿入（HTML修正不要の魔法） */
-    /* 1列目: ID */
-    td:nth-of-type(1)::before { 
-        content: "ID"; 
-        position: absolute; left: 10px; top: 10px; 
-        font-weight: bold; color: #b9bbbe; 
-    }
-    /* 2列目: タイトル */
-    td:nth-of-type(2)::before { 
-        content: "タイトル"; 
-        position: absolute; left: 10px; top: 10px; 
-        font-weight: bold; color: #b9bbbe; 
-    }
-    /* 3列目: ステータス */
-    td:nth-of-type(3)::before { 
-        content: "ステータス"; 
-        position: absolute; left: 10px; top: 10px; 
-        font-weight: bold; color: #b9bbbe; 
-    }
-    /* 4列目: 作成日 */
-    td:nth-of-type(4)::before { 
-        content: "作成日"; 
-        position: absolute; left: 10px; top: 10px; 
-        font-weight: bold; color: #b9bbbe; 
-    }
-
-    /* 6. ボタンを指で押しやすく大きくする */
-    .btn, button, input[type="submit"] {
-        padding: 12px 18px; /* タップ領域拡大 */
-        font-size: 1rem;
-        margin: 5px 2px;
-        display: inline-block;
-    }
-    
-    /* 7. ログのテーブル調整（横スクロールさせる） */
-    h3 { margin-top: 40px; }
-    
-    /* 2つ目のテーブル（操作ログ）は単純なカード化が難しいため
-       横スクロールできるようにする */
-    table:nth-of-type(2) {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-    /* ログの行はカード化せずそのままテーブルとして扱うための上書き */
-    table:nth-of-type(2) thead tr {
-        position: static;
-    }
-    table:nth-of-type(2) tbody tr {
-        display: table-row;
-        margin: 0;
-        box-shadow: none;
-        background-color: transparent;
-    }
-    table:nth-of-type(2) td {
-        display: table-cell;
-        text-align: left;
-        padding-left: 10px;
-        border-bottom: 1px solid #444;
-    }
-    table:nth-of-type(2) td::before {
-        content: none;
-    }
-}
-
-
-/* --- フォーム・編集画面のスマホ最適化 --- */
-@media screen and (max-width: 768px) {
-    
-    /* 1. ラベル（項目名）を見やすく */
-    label {
-        display: block;      /* 強制的に改行 */
-        margin-top: 15px;
-        margin-bottom: 8px;
-        font-size: 1.1rem;   /* 少し大きく */
-        color: #b9bbbe;
-    }
-
-    /* 2. 入力欄をタップしやすく */
-    input[type="text"], 
-    textarea, 
-    select {
-        width: 100%;         /* 横幅いっぱい */
-        font-size: 16px;     /* iPhone等で勝手にズームしないサイズ */
-        padding: 15px;       /* 指で押しやすい広さ */
-        border-radius: 8px;
-        background-color: #202225;
-        border: 1px solid #40444b;
-        color: #fff;
-        box-sizing: border-box; /* 枠線を含めた幅計算 */
-        margin-bottom: 15px;
-    }
-
-    /* テキストエリア（JSON編集など）は高さを確保 */
-    textarea {
-        min-height: 200px;
-        line-height: 1.5;
-    }
-
-    /* 3. フォーカス時（入力中）のデザイン */
-    input[type="text"]:focus,
-    textarea:focus {
-        border-color: #7289da;
-        outline: none;
-        box-shadow: 0 0 8px rgba(114, 137, 218, 0.5);
-    }
-
-    /* 4. アクションボタン（保存・戻る）を大きく縦積みに */
-    .btn, button, input[type="submit"] {
-        width: 100%;        /* 横幅いっぱい */
-        display: block;     /* 縦に並べる */
-        margin: 10px 0;     /* 上下の隙間 */
-        padding: 15px;      /* 押しごたえのあるサイズ */
-        font-size: 1.1rem;
-        text-align: center;
-    }
-
-    /* 補足：もしボタンが横並びのエリア（div）に入っていても強制的に縦にする */
-    .button-group, .actions {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-}
-
 /* =========================================
-   認証ページ共通デザイン (ログイン & 入国拒否)
+   AWAJI EMPIRE THEME - Global Styles
    ========================================= */
-
-/* 認証ページ専用の body クラス */
-body.auth-page {
-    background-color: #050505;
-    background-image: linear-gradient(135deg, #000000 0%, #1a0202 50%, #2b0000 100%);
-    color: #ffffff;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    text-align: center;
-    overflow-x: hidden; /* 横揺れ防止 */
+:root {
+    /* Color Palette */
+    --bg-body: #f4f6f9;
+    --bg-dark: #050505;
+    --bg-panel: #ffffff;
+    --bg-navbar: #2c3e50;
+    
+    --text-main: #333333;
+    --text-light: #ffffff;
+    --text-muted: #7f8c8d;
+    
+    --accent-red: #8a0000;
+    --accent-red-light: #cc0000;
+    --accent-blue: #3498db;
+    --accent-green: #27ae60;
+    --accent-orange: #e67e22;
+    --accent-gray: #95a5a6;
+    
+    --border-color: #ecf0f1;
 }
 
-/* 背景のエフェクト（天狗と羽） */
-body.auth-page::before {
-    content: "🪶";
-    position: absolute;
-    font-size: 20rem;
-    opacity: 0.03;
-    top: -50px; left: -50px;
-    transform: rotate(-30deg);
-    pointer-events: none;
+/* Base */
+body {
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", sans-serif;
+    margin: 0; padding: 0; line-height: 1.6;
 }
-body.auth-page::after {
-    content: "👺";
-    position: absolute;
-    font-size: 25rem;
-    opacity: 0.03;
-    bottom: -80px; right: -80px;
-    transform: rotate(20deg);
-    pointer-events: none;
-}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; padding: 0; margin: 0; }
+h1, h2, h3 { margin: 0 0 15px 0; }
 
-/* カードコンテナ（共通） */
-.auth-container {
-    background-color: rgba(15, 15, 15, 0.95);
-    padding: 40px 30px;
-    border-radius: 8px;
-    border-top: 4px solid #ff0000; /* 天狗レッド */
-    border-bottom: 1px solid #330000;
-    box-shadow: 0 0 50px rgba(138, 0, 0, 0.3);
-    max-width: 480px;
-    width: 90%;
+/* Layout */
+.navbar {
+    background-color: var(--bg-navbar); color: var(--text-light); padding: 15px 20px;
+    display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.navbar-brand { font-size: 1.2rem; font-weight: bold; display: flex; align-items: center; gap: 10px; }
+.user-menu { display: flex; align-items: center; gap: 15px; }
+.user-avatar { width: 30px; height: 30px; border-radius: 50%; vertical-align: middle; }
+
+.container { max-width: 1000px; margin: 30px auto; padding: 0 15px; }
+.container-sm { max-width: 600px; margin: 30px auto; padding: 0 15px; }
+
+.panel {
+    background: var(--bg-panel); padding: 25px; border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px;
     position: relative;
-    z-index: 10;
-    box-sizing: border-box;
+}
+.panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+
+/* Components: Buttons */
+.btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 10px 20px; border-radius: 4px; font-weight: bold; border: none; cursor: pointer; color: white; transition: 0.2s;
+    font-size: 0.95rem; line-height: 1; text-decoration: none;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+.btn-block { width: 100%; display: flex; }
+.btn-sm { padding: 6px 12px; font-size: 0.85rem; }
+.btn-text-only { background: none; border: none; cursor: pointer; padding: 5px; }
+.btn-text-only:hover { text-decoration: underline; }
+
+.btn-green { background: var(--accent-green); }
+.btn-blue { background: var(--accent-blue); }
+.btn-orange { background: var(--accent-orange); }
+.btn-gray { background: var(--accent-gray); }
+.btn-red { background: var(--accent-red); }
+
+/* Components: Badges & Alerts */
+.status-badge { padding: 5px 10px; border-radius: 15px; color: white; font-size: 0.8rem; font-weight: bold; }
+.status-badge.active { background: var(--accent-green); }
+.status-badge.closed { background: var(--accent-gray); }
+
+.alert { padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid transparent; }
+.alert-success { background: #d4edda; color: #155724; border-color: #c3e6cb; }
+
+/* Components: Forms */
+label { display: block; margin-bottom: 8px; font-weight: bold; color: var(--text-muted); }
+input[type="text"], textarea, select {
+    width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+input[type="text"]:focus, textarea:focus, select:focus {
+    border-color: var(--accent-blue); outline: none; box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
 }
 
-/* アイコンアニメーション */
-.icon-float {
-    font-size: 4rem;
-    margin-bottom: 20px;
-    display: inline-block;
-    animation: float 3s ease-in-out infinite;
-}
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
+/* Radio & Checkbox Styling */
+.option-label { display: flex; align-items: center; cursor: pointer; margin-bottom: 10px; font-weight: normal; }
+.option-label input { margin-right: 10px; transform: scale(1.2); }
+.other-input { border: none; border-bottom: 1px solid #ccc; background: transparent; width: 60%; margin-left: 10px; padding: 5px; outline: none; }
+.other-input:focus { border-bottom: 1px solid var(--accent-blue); }
+.other-input:disabled { border-bottom: 1px dashed #eee; color: #ccc; cursor: not-allowed; background: transparent; }
 
-/* 見出し */
-.auth-title {
-    margin: 0 0 10px 0;
-    color: #ff3333;
-    font-size: 1.8rem;
-    font-weight: bold;
-    letter-spacing: 1px;
-}
+/* Form Logic Animation */
+.q-panel { transition: all 0.3s ease; }
+.hidden-question { display: none; }
+.fade-in { animation: fadeIn 0.5s forwards; display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-.auth-desc {
-    line-height: 1.6;
-    margin-bottom: 30px;
-    color: #cccccc;
-    font-size: 1rem;
-}
+/* Components: Tables (Dashboard) */
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 15px; border-bottom: 1px solid var(--border-color); text-align: left; vertical-align: middle; }
+th { background: #f8f9fa; font-weight: bold; color: var(--text-muted); }
 
-/* ボタンスタイル（共通） */
+/* Components: Results (Charts) */
+.chart-row { display: flex; align-items: center; margin-bottom: 8px; font-size: 0.95rem; }
+.chart-label { width: 30%; padding-right: 10px; word-break: break-all; }
+.chart-bar-area { width: 50%; background: #eee; height: 20px; border-radius: 10px; overflow: hidden; }
+.chart-bar-fill { background: var(--accent-blue); height: 100%; border-radius: 10px; transition: width 1s ease-in-out; }
+.chart-value { width: 20%; text-align: right; padding-left: 10px; color: var(--text-muted); }
+.text-answer-box { background: #f9f9f9; padding: 10px; border-bottom: 1px solid #eee; margin-bottom: 5px; font-size: 0.9rem; }
+
+/* Auth Pages (Login / Access Denied) */
+body.auth-page {
+    background: var(--bg-dark); background-image: linear-gradient(135deg, #000, #1a0202, #2b0000);
+    color: var(--text-light); display: flex; justify-content: center; align-items: center; min-height: 100vh;
+}
+.auth-container {
+    background: rgba(15,15,15,0.95); padding: 40px; border-radius: 8px; border-top: 4px solid var(--accent-red-light);
+    max-width: 480px; width: 90%; text-align: center; position: relative; z-index: 10;
+    box-shadow: 0 0 50px rgba(138, 0, 0, 0.4);
+}
 .auth-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    background-color: #8a0000;
-    color: #fff;
-    padding: 15px 0;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 6px;
-    margin-top: 15px;
-    transition: all 0.2s;
-    border: 1px solid #a30000;
-    font-size: 1.1rem;
-    cursor: pointer;
+    background: var(--accent-red); color: white; width: 100%; padding: 15px 0; border-radius: 6px; display: block; margin-top: 20px;
+    font-weight: bold; transition: 0.2s; border: 1px solid #a30000;
 }
-.auth-btn:hover {
-    background-color: #cc0000;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(204, 0, 0, 0.4);
-}
+.auth-btn:hover { background: var(--accent-red-light); transform: translateY(-2px); }
 
-/* サブリンク（ログアウト等） */
-.auth-sub-link {
-    display: inline-block;
-    color: #666;
-    margin-top: 20px;
-    font-size: 0.9rem;
-    text-decoration: none;
-}
-.auth-sub-link:hover {
-    color: #aaa;
-    text-decoration: underline;
-}
-
-/* --- 入国拒否ページ専用パーツ --- */
-.guide-box {
-    background: #1a0a0a;
-    padding: 20px;
-    border-left: 4px solid #cc0000;
-    text-align: left;
-    margin-bottom: 20px;
-    border-radius: 0 4px 4px 0;
-}
-.guide-item {
-    margin-bottom: 20px;
-    font-size: 0.95rem;
-    color: #bbb;
-}
-.guide-highlight {
-    color: #ffaaaa;
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-}
-
-/* --- スマホ向け調整 (レスポンシブ) --- */
-@media screen and (max-width: 480px) {
-    .auth-container {
-        padding: 30px 20px; /* 余白を少し減らす */
-        width: 95%; /* 画面いっぱい使う */
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .container, .container-sm { width: 95%; margin: 20px auto; padding: 0; }
+    .navbar { flex-direction: column; gap: 15px; text-align: center; }
+    
+    /* Responsive Table (Card View) */
+    .responsive-table thead { display: none; }
+    .responsive-table tr {
+        display: flex; flex-direction: column; position: relative;
+        background: var(--bg-panel); border: 1px solid #e1e4e8; margin-bottom: 20px; border-radius: 12px; padding: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
-    .auth-title {
-        font-size: 1.5rem;
-    }
-    .icon-float {
-        font-size: 3rem;
-    }
-    .auth-btn {
-        padding: 18px 0;
+    .responsive-table td { display: block; border: none; padding: 5px 0; width: auto; }
+    .responsive-table td::before { content: attr(data-label); font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 2px; }
+    
+    .responsive-table td:nth-of-type(2) { order: -1; font-size: 1.25rem; font-weight: bold; margin-bottom: 10px; } /* Title */
+    .responsive-table td:nth-of-type(2)::before { display: none; }
+    
+    .responsive-table td:nth-of-type(3) { position: absolute; top: 20px; right: 20px; padding: 0; } /* Status */
+    .responsive-table td:nth-of-type(3)::before { display: none; }
+    
+    .responsive-table td:last-child { margin-top: 15px; padding-top: 15px; border-top: 1px dashed #eee; } /* Actions */
+    .responsive-table td:last-child::before { display: none; }
+    
+    .action-group { display: flex; gap: 10px; width: 100%; }
+    .action-group form { flex: 1; }
+    .action-group .btn { width: 100%; justify-content: center; }
+    .action-group form:last-child { flex: 0 0 auto; } /* Delete button small */
+    .action-group form:last-child .btn { width: 48px; padding: 0; }
+}

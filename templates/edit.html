@@ -2,46 +2,40 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>アンケート編集</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>編集 - {{ survey['title'] }}</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ css_ver }}">
 </head>
 <body>
-    <div class="container" style="max-width: 800px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2><i class="fas fa-edit"></i> アンケート編集 (ID: {{ survey['id'] }})</h2>
-            <a href="/" class="btn btn-gray">戻る</a>
-        </div>
-
-        <form action="/save_survey" method="post" id="surveyForm">
-            <input type="hidden" name="survey_id" value="{{ survey['id'] }}">
-            <input type="hidden" name="questions_json" id="questionsJson">
-
-            <div class="form-group">
-                <label>アンケートタイトル</label>
-                <input type="text" name="title" value="{{ survey['title'] }}" required style="font-size: 1.2em; font-weight: bold;">
+    <div class="container">
+        <div class="panel">
+            <div class="panel-header">
+                <h2><i class="fas fa-edit"></i> 編集 (ID: {{ survey['id'] }})</h2>
+                <a href="{{ url_for('index') }}" class="btn btn-gray">戻る</a>
             </div>
 
-            <h3 style="margin-top: 30px; border-bottom: 1px solid #eee; padding-bottom: 10px;">質問リスト</h3>
-            <div id="questionsContainer"></div>
+            <form action="{{ url_for('survey.save_survey') }}" method="post" id="surveyForm">
+                <input type="hidden" name="survey_id" value="{{ survey['id'] }}">
+                <input type="hidden" name="questions_json" id="questionsJson">
 
-            <div class="button-group" style="justify-content: center; margin-top: 20px;">
-                <button type="button" class="btn btn-blue" onclick="addQuestion()">
+                <label>アンケートタイトル</label>
+                <input type="text" name="title" value="{{ survey['title'] }}" required style="font-weight:bold; margin-bottom:20px; font-size:1.2rem;">
+
+                <div id="questionsContainer"></div>
+
+                <button type="button" class="btn btn-blue" onclick="addQuestion()" style="margin:20px auto; display:block;">
                     <i class="fas fa-plus"></i> 質問を追加
                 </button>
-            </div>
 
-            <div style="margin-top: 40px; text-align: right; border-top: 1px solid #eee; padding-top: 20px;">
-                <button type="submit" class="btn btn-green" style="padding: 12px 30px; font-size: 1.1em;">
-                    <i class="fas fa-save"></i> 保存して戻る
+                <button type="submit" class="btn btn-green btn-block" style="padding:15px; font-size:1.1rem;">
+                    保存して戻る
                 </button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 
-    <script>
-        window.initialQuestions = {{ questions | tojson }};
-    </script>
-    <script src="{{ url_for('static', filename='js/edit_survey.js') }}"></script>
+    <script>window.initialQuestions = {{ questions | tojson }};</script>
+    <script src="{{ url_for('static', filename='js/edit_survey.js') }}?v={{ css_ver }}"></script>
 </body>
 </html>

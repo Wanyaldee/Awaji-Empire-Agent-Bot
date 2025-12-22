@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>集計結果 - {{ survey['title'] }}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ css_ver }}">
+</head>
+<body>
+    <div class="container">
+        <div class="panel">
+            <div class="panel-header">
+                <h2><i class="fas fa-chart-pie"></i> 集計結果: {{ survey['title'] }}</h2>
+                <a href="{{ url_for('index') }}" class="btn btn-gray">戻る</a>
+            </div>
+            <p><span class="status-badge active" style="font-size:1rem;">回答総数: {{ response_count }} 件</span></p>
+        </div>
+
+        {% for k, s in stats.items() %}
+        <div class="panel">
+            <h3>Q. {{ s.question }}</h3>
+            
+            {% if s.type in ['radio','checkbox','select'] %}
+                <div>
+                {% for opt, cnt in s.counts.items() %}
+                    {% set pct = (cnt/s.total*100)|round(1) if s.total>0 else 0 %}
+                    <div class="chart-row">
+                        <div class="chart-label">{{ opt }}</div>
+                        <div class="chart-bar-area">
+                            <div class="chart-bar-fill" style="width:{{ pct }}%;"></div>
+                        </div>
+                        <div class="chart-value">{{ cnt }}票 ({{ pct }}%)</div>
+                    </div>
+                {% endfor %}
+                </div>
+            {% else %}
+                <div style="max-height:200px; overflow-y:auto; border:1px solid #eee; padding:10px;">
+                    {% for t in s.texts %}
+                        <div class="text-answer-box">{{ t }}</div>
+                    {% else %}
+                        <div style="color:#ccc;">回答なし</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

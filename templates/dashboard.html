@@ -2,98 +2,81 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>Awaji Empire Agent Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ css_ver }}">
 </head>
 <body>
-
-    <div style="background: #2c3e50; padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center; margin: -20px -20px 20px -20px;">
-        <div style="font-weight: bold; font-size: 1.2em;">
-            <i class="fas fa-robot"></i> Awaji Empire Agent
+    <nav class="navbar">
+        <div class="navbar-brand"><i class="fas fa-robot"></i> Awaji Empire Agent</div>
+        <div class="user-menu">
+            <img src="{{ user['avatar_url'] }}" class="user-avatar">
+            {{ user['name'] }}
+            <a href="{{ url_for('logout') }}" class="btn btn-orange btn-sm">ログアウト</a>
         </div>
-        <div>
-            <span style="margin-right: 15px;"><img src="{{ user['avatar_url'] }}" style="width:24px; border-radius:50%; vertical-align:middle;"> {{ user['name'] }}</span>
-            <a href="/logout" class="btn btn-orange" style="padding: 4px 10px; font-size: 0.8em;">ログアウト</a>
-        </div>
-    </div>
+    </nav>
 
     <div class="container">
         {% for cat, msg in get_flashed_messages(with_categories=true) %}
-            <div style="background: #d4edda; color: #155724; padding: 10px; border-radius: 4px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
-                {{ msg }}
-            </div>
+            <div class="alert alert-success">{{ msg }}</div>
         {% endfor %}
 
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h1><i class="fas fa-list-alt"></i> 作成したアンケート一覧</h1>
-            <form action="/create_new" method="post" style="margin:0;">
-                <button type="submit" class="btn btn-green"><i class="fas fa-plus"></i> 新規作成</button>
-            </form>
-        </div>
+        <div class="panel">
+            <div class="panel-header">
+                <h2>📜 作成したアンケート</h2>
+                <form action="{{ url_for('survey.create_new') }}" method="post">
+                    <button class="btn btn-green"><i class="fas fa-plus"></i> 新規作成</button>
+                </form>
+            </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 50px;">ID</th>
-                    <th>タイトル</th>
-                    <th style="text-align: center; width: 100px;">ステータス</th>
-                    <th style="width: 180px;">作成日</th>
-                    <th style="text-align: right; width: 220px;">操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for s in surveys %}
-                <tr>
-                    <td style="text-align: center; font-weight: bold; color: #95a5a6;">{{ s['id'] }}</td>
-                    <td style="font-weight: bold;">{{ s['title'] }}</td>
-                    <td style="text-align: center;">
-                        <span class="status-badge {{ 'active' if s['is_active'] else 'closed' }}">
-                            {{ '受付中' if s['is_active'] else '停止中' }}
-                        </span>
-                    </td>
-                    <td style="color: #7f8c8d; font-size: 0.9em;">{{ s['created_at'] }}</td>
-                    <td style="text-align: right;" class="actions">
-                        <form action="/toggle_status/{{ s['id'] }}" method="post" style="display:inline;">
-                            {% if s['is_active'] %}
-                                <button type="submit" class="btn btn-orange" title="停止する"><i class="fas fa-pause"></i></button>
-                            {% else %}
-                                <button type="submit" class="btn btn-green" title="再開する"><i class="fas fa-play"></i></button>
-                            {% endif %}
-                        </form>
-                        <a href="/edit/{{ s['id'] }}" class="btn btn-blue" title="編集"><i class="fas fa-edit"></i></a>
-                        
-                        <form action="/delete_survey/{{ s['id'] }}" method="post" style="display:inline;" onsubmit="return confirm('削除しますか？');">
-                            <button type="submit" class="btn btn-gray" title="削除"><i class="fas fa-trash"></i></button>
-                        </form>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="5">
-                        <div class="no-data">まだアンケートがありません。右上のボタンから作成してください。</div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <h2 style="margin-top: 40px; font-size: 1.2em; border-left-color: #7f8c8d;">操作ログ (直近50件)</h2>
-        <div style="max-height: 200px; overflow-y: auto; border: 1px solid #eee;">
-            <table style="margin: 0;">
-                <tbody>
-                    {% for l in logs %}
-                    <tr style="font-size: 0.85em;">
-                        <td style="width: 160px; color: #7f8c8d;">{{ l['created_at'] }}</td>
-                        <td style="width: 120px;">{{ l['user_name'] }}</td>
-                        <td style="width: 100px;"><span style="background:#333; color:white; padding:2px 6px; border-radius:3px; font-size:0.8em;">{{ l['command'] }}</span></td>
-                        <td>{{ l['detail'] }}</td>
+            <table class="responsive-table">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">ID</th> <th>タイトル</th>
+                        <th style="width:100px;">ステータス</th>
+                        <th style="width:150px;">作成日</th>
+                        <th style="width:250px;">操作</th>
                     </tr>
+                </thead>
+                <tbody>
+                    {% for s in surveys %}
+                    <tr>
+                        <td data-label="ID" style="font-family:monospace; font-size:1.1rem; color:#555;">
+                            {{ '%03d' % s['id'] }}
+                        </td>
+                        
+                        <td data-label="タイトル">{{ s['title'] }}</td>
+                        <td data-label="ステータス">
+                            <span class="status-badge {{ 'active' if s['is_active'] else 'closed' }}">
+                                {{ '受付中' if s['is_active'] else '停止中' }}
+                            </span>
+                        </td>
+                        <td data-label="作成日" style="color:var(--text-muted);">{{ s['created_at'] }}</td>
+                        <td data-label="操作">
+                            <div class="action-group">
+                                <form action="{{ url_for('survey.toggle_status', survey_id=s['id']) }}" method="post" style="flex:1;">
+                                    <button class="btn {{ 'btn-orange' if s['is_active'] else 'btn-green' }}">
+                                        {{ '停止' if s['is_active'] else '再開' }}
+                                    </button>
+                                </form>
+                                <a href="{{ url_for('survey.edit_survey', survey_id=s['id']) }}" class="btn btn-blue">編集</a>
+                                <a href="{{ url_for('survey.view_results', survey_id=s['id']) }}" class="btn btn-blue">集計</a>
+                                <a href="{{ url_for('survey.download_csv', survey_id=s['id']) }}" class="btn btn-gray" title="CSV"><i class="fas fa-file-csv"></i></a>
+                                
+                                <a href="{{ url_for('survey.view_form', survey_id=s['id']) }}" target="_blank" class="btn btn-green" title="回答ページ"><i class="fas fa-external-link-alt"></i></a>
+                                <form action="{{ url_for('survey.delete_survey', survey_id=s['id']) }}" method="post" onsubmit="return confirm('削除しますか？');">
+                                    <button class="btn btn-gray"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="5" style="text-align:center; padding:30px;">アンケートがありません</td></tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-
     </div>
 </body>
 </html>
