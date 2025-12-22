@@ -9,3 +9,9 @@ config.py
 
 #.envファイル
 .env
+
+__pycache__/
+
+*.pyc
+
+.DS_Store

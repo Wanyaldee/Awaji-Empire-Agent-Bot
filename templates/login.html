@@ -2,34 +2,23 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>ログイン - Awaji Empire Agent</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> ログイン - Awaji Empire Agent Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body class="login-page">
-    
-    <div style="text-align: center;">
-        <div style="margin-bottom: 20px;">
-            <i class="fas fa-robot fa-4x" style="color: #3498db;"></i>
-        </div>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="icon-float">👺</div>
         
-        <h1 class="login-title">Awaji Empire<br>Agent Dashboard</h1>
+        <h1 class="auth-title">AWAJI EMPIRE AGENT</h1>
+        <p class="auth-desc">
+            淡路帝国 執務システム<br>
+            関係者以外ノ立チ入リヲ禁ズ
+        </p>
 
-        <div class="login-card">
-            <p style="color: #7f8c8d; margin-bottom: 20px;">
-                Bot管理ダッシュボードへようこそ<br>
-                Discordアカウントでログインしてください。
-            </p>
-            
-            <a href="{{ auth_url }}" class="btn btn-blue" style="width: 100%; padding: 12px; font-size: 1.1em;">
-                <i class="fab fa-discord me-2"></i> Discordでログイン
-            </a>
-        </div>
-        
-        <div style="margin-top: 20px; color: #bdc3c7; font-size: 0.8em;">
-            &copy; 2025 Awaji Empire
-        </div>
+        <a href="{{ auth_url }}" class="auth-btn">
+            Discordでログイン ➔
+        </a>
     </div>
-
 </body>
 </html>

@@ -232,7 +232,7 @@ class Survey(commands.Cog):
     @app_commands.command(name="create_survey", description="アンケート作成用のWebダッシュボードを開きます")
     async def create_survey(self, interaction: discord.Interaction):
         # ★重要: ここをあなたのドメインに変更！
-        dashboard_url = "https://agent.awajiempire.net" 
+        dashboard_url = "https://dashboard.awajiempire.net" 
         
         embed = discord.Embed(
             title="🛠️ アンケート作成",
