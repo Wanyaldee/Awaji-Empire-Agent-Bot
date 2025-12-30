@@ -2,44 +2,49 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>集計結果 - {{ survey['title'] }}</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ css_ver }}">
 </head>
 <body>
+    <nav class="navbar">
+        <div class="navbar-brand">集計レポート</div>
+        <a href="{{ url_for('index') }}" class="btn btn-sm btn-outline" style="color:white; border-color:white;">戻る</a>
+    </nav>
+
     <div class="container">
-        <div class="panel">
-            <div class="panel-header">
-                <h2><i class="fas fa-chart-pie"></i> 集計結果: {{ survey['title'] }}</h2>
-                <a href="{{ url_for('index') }}" class="btn btn-gray">戻る</a>
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><i class="fas fa-chart-pie"></i> {{ survey['title'] }}</h2>
+                <span class="badge badge-success" style="font-size:1rem;">回答総数: {{ response_count }} 件</span>
             </div>
-            <p><span class="status-badge active" style="font-size:1rem;">回答総数: {{ response_count }} 件</span></p>
         </div>
 
         {% for k, s in stats.items() %}
-        <div class="panel">
-            <h3>Q. {{ s.question }}</h3>
-            
+        <div class="card">
+            <h3 style="margin-top:0; font-size:1.1rem; border-bottom:1px dashed #eee; padding-bottom:10px;">
+                <span style="color:var(--accent);">Q.</span> {{ s.question }}
+            </h3>
+
             {% if s.type in ['radio','checkbox','select'] %}
-                <div>
-                {% for opt, cnt in s.counts.items() %}
+                <div style="margin-top:15px;">
+                    {% for opt, cnt in s.counts.items() %}
                     {% set pct = (cnt/s.total*100)|round(1) if s.total>0 else 0 %}
                     <div class="chart-row">
                         <div class="chart-label">{{ opt }}</div>
-                        <div class="chart-bar-area">
+                        <div class="chart-bar-bg">
                             <div class="chart-bar-fill" style="width:{{ pct }}%;"></div>
                         </div>
                         <div class="chart-value">{{ cnt }}票 ({{ pct }}%)</div>
                     </div>
-                {% endfor %}
+                    {% endfor %}
                 </div>
             {% else %}
-                <div style="max-height:200px; overflow-y:auto; border:1px solid #eee; padding:10px;">
+                <div style="background:#f8f9fa; padding:10px; border-radius:6px; max-height:200px; overflow-y:auto;">
                     {% for t in s.texts %}
-                        <div class="text-answer-box">{{ t }}</div>
+                        <div style="border-bottom:1px solid #eee; padding:5px 0;">{{ t }}</div>
                     {% else %}
-                        <div style="color:#ccc;">回答なし</div>
+                        <span style="color:var(--gray);">回答なし</span>
                     {% endfor %}
                 </div>
             {% endif %}

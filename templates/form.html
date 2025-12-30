@@ -7,64 +7,66 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ css_ver }}">
 </head>
-<body>
+<body style="background:#eef2f5;">
     <div class="container-sm">
         <form action="{{ url_for('survey.submit_response') }}" method="POST">
             <input type="hidden" name="survey_id" value="{{ survey['id'] }}">
 
-            <div class="panel" style="border-top: 8px solid var(--accent-green);">
-                <h1>{{ survey['title'] }}</h1>
-                <p style="color:var(--text-muted);">以下の質問にお答えください。</p>
+            <div class="card" style="border-top: 6px solid var(--success); text-align:center;">
+                <h1 style="font-size:1.5rem; margin-bottom:0.5rem;">{{ survey['title'] }}</h1>
+                <p style="color:var(--gray); margin:0;">以下の質問にお答えください</p>
             </div>
 
             {% for q in questions %}
-            <div class="panel q-panel {% if q.logic %}hidden-question{% endif %}" 
+            <div class="card q-panel {% if q.logic %}hidden{% endif %}" 
                  id="p_{{loop.index0}}" 
                  data-idx="{{loop.index0}}" 
                  {% if q.logic %}data-trg="{{q.logic.trigger_idx}}" data-val="{{q.logic.trigger_val}}"{% endif %}>
                 
-                <label>
-                    Q{{loop.index}}. {{q.text}}
-                    {% if q.type!='text' %}<span style="font-weight:normal; font-size:0.8rem; color:var(--accent-red);">(必須)</span>{% endif %}
+                <label style="margin-bottom:1rem; font-size:1.05rem;">
+                    <span style="color:var(--success);">Q{{loop.index}}.</span> {{q.text}}
+                    {% if q.type!='text' %}<span class="badge badge-danger" style="background:var(--danger); font-size:0.6rem; vertical-align:middle; margin-left:5px;">必須</span>{% endif %}
                 </label>
 
                 {% if q.type=='text' %}
-                    <textarea name="q_{{loop.index0}}" rows="3" placeholder="回答を入力..."></textarea>
+                    <textarea name="q_{{loop.index0}}" class="form-control" rows="3" placeholder="回答を入力..."></textarea>
 
                 {% elif q.type=='radio' %}
                     {% for opt in q.options %}
-                    <label class="option-label">
+                    <label class="option-item">
                         <input type="radio" name="q_{{loop.index0}}" value="{{opt}}" required onchange="checkLogic()">
                         <span>{{opt}}</span>
                     </label>
                     {% endfor %}
                     {% if q.has_other %}
-                    <label class="option-label">
+                    <label class="option-item">
                         <input type="radio" name="q_{{loop.index0}}" value="__other__" onchange="checkLogic()">
-                        <span>その他:</span>
-                        <input type="text" name="q_{{loop.index0}}_other" class="other-input" disabled>
+                        <span style="margin-right:10px;">その他:</span>
+                        <input type="text" name="q_{{loop.index0}}_other" class="form-control" style="width:auto; flex:1; padding:4px;" disabled>
                     </label>
                     {% endif %}
 
                 {% elif q.type=='checkbox' %}
                     {% for opt in q.options %}
-                    <label class="option-label">
+                    <label class="option-item">
                         <input type="checkbox" name="q_{{loop.index0}}[]" value="{{opt}}">
                         <span>{{opt}}</span>
                     </label>
                     {% endfor %}
                     {% if q.has_other %}
-                    <label class="option-label">
+                    <label class="option-item">
                         <input type="checkbox" name="q_{{loop.index0}}[]" value="__other__" onchange="toggleOther(this)">
-                        <span>その他:</span>
-                        <input type="text" name="q_{{loop.index0}}_other" class="other-input" disabled>
+                        <span style="margin-right:10px;">その他:</span>
+                        <input type="text" name="q_{{loop.index0}}_other" class="form-control" style="width:auto; flex:1; padding:4px;" disabled>
                     </label>
                     {% endif %}
                 {% endif %}
             </div>
             {% endfor %}
 
-            <button type="submit" class="btn btn-green btn-block" style="padding:15px; font-size:1.1rem;">送信する</button>
+            <button type="submit" class="btn btn-success btn-block" style="padding:1rem; font-size:1.1rem; box-shadow:0 4px 15px rgba(39, 174, 96, 0.3);">
+                送信する
+            </button>
         </form>
     </div>
 
@@ -77,28 +79,26 @@
                 const tIdx = p.dataset.trg, tVal = p.dataset.val;
                 if(tIdx) {
                     if(ans[tIdx] === tVal) {
-                        p.classList.remove('hidden-question');
+                        p.classList.remove('hidden');
                         p.classList.add('fade-in');
                         toggleReq(p, true);
                     } else {
                         p.classList.remove('fade-in');
-                        p.classList.add('hidden-question');
+                        p.classList.add('hidden');
                         toggleReq(p, false);
                     }
                 }
             });
-            // Radioのその他制御
             document.querySelectorAll('input[value=__other__]').forEach(r=>{
-                const txt = r.parentElement.querySelector('.other-input');
+                const txt = r.parentElement.querySelector('input[type=text]');
                 if(txt) { txt.disabled = !r.checked; if(r.checked) txt.focus(); }
             });
         }
         function toggleOther(chk){
-            const txt = chk.parentElement.querySelector('.other-input');
+            const txt = chk.parentElement.querySelector('input[type=text]');
             if(txt) { txt.disabled = !chk.checked; if(chk.checked) txt.focus(); }
         }
         function toggleReq(p, req){
-            // 必須属性の切り替え (Radioのみ簡易対応)
             p.querySelectorAll('input[type=radio]').forEach(i=>{ 
                 if(req) i.setAttribute('required',''); else i.removeAttribute('required'); 
             });

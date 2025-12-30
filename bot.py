@@ -129,7 +129,7 @@ if __name__ == '__main__':
     
     if bot_token:
         try:
-            bot.run(bot_token)
+            bot.run(bot_token, reconnect=True)
         except discord.LoginFailure:
             print("Error: Invalid token in token.txt")
         except Exception as e:
