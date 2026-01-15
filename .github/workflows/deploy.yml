@@ -1,0 +1,27 @@
+name: CI/CD Deploy
+
+on:
+  push:
+    branches: [ master ] # masterにマージされたら実行
+
+jobs:
+  deploy:
+    runs-on: 01sv-ubuntu # 先ほど設定したランナー
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          path: '/discord_bot'
+
+      - name: Install dependencies
+        run: |
+          cd /discord_bot
+          python3 -m pip install -r requirements.txt
+
+      - name: Restart Bot Service
+        run: |
+          sudo systemctl restart awaji-bot.service
+
+      - name: Restart Web App Service
+        run: |
+          sudo systemctl restart awaji-webapp.service
