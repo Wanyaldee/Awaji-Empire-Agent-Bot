@@ -22,8 +22,8 @@ jobs:
 
       - name: Restart Bot Service
         run: |
-          sudo systemctl restart awaji-bot.service
+          sudo systemctl restart discord_bot.service
 
       - name: Restart Web App Service
         run: |
-          sudo systemctl restart awaji-webapp.service
+          sudo systemctl restart discord_webapp.service
