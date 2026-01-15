@@ -83,6 +83,7 @@ def get_token_from_file(filename="token.txt"):
 @bot.event
 async def on_ready():
     """BotがDiscordに接続・再接続したときに実行される"""
+    print('--- Bot is starting up ---', flush=True) # flushを追加
     print('-------------------------------------')
     print('Bot Name: {0.user.name}'.format(bot))
     print('Bot ID: {0.user.id}'.format(bot))
