@@ -52,9 +52,14 @@ DB_USER=bot_user
 DB_PASS=your_password
 
 # Discord OAuth2
-DISCORD_CLIENT_ID=1446462054423855144
-DISCORD_CLIENT_SECRET=your_client_secret
-DISCORD_REDIRECT_URI=[https://dashboard.awajiempire.net/callback](https://dashboard.awajiempire.net/callback)
+DISCORD_CLIENT_ID=CLIENT_ID
+DISCORD_CLIENT_SECRET=CLIENT_SECRET
+DISCORD_REDIRECT_URI=https://dashboard.awajiempire.net/callback
+
+TARGET_USER_ID=TARGET_USER_ID #ホストのユーザーID
+ACTIVE_START_HOUR=ACTIVE_START_HOUR #稼働開始時間
+ACTIVE_END_HOUR=ACTIVE_END_HOUR #稼働終了時間
+REPORT_CHANNEL_NAME=REPORT_CHANNEL_NAME #レポート送信先チャンネル名
 ```
 
 ### 2. 依存関係のインストール
