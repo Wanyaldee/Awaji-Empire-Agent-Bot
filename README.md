@@ -65,8 +65,10 @@ DASHBOARD_URL=https://dashboard.awajiempire.net
 
 # ★追加: AFK監視設定
 TARGET_USER_ID=target_user_id #監視対象ユーザー
-AFK_TIMEOUT_SECONDS=300          #AFKタイムアウト時間（秒）
-REPORT_CHANNEL_NAME=配信コメント   #レポート送信先チャンネル名
+ACTIVE_START_HOUR=ACTIVE_START_HOUR #稼働開始時間
+ACTIVE_END_HOUR=ACTIVE_END_HOUR #稼働終了時間
+AFK_TIMEOUT_SECONDS=AFK_TIMEOUT_SECONDS #AFKタイムアウト時間（秒）
+REPORT_CHANNEL_NAME=REPORT_CHANNEL_NAME #レポート送信先チャンネル名
 ```
 
 ### 2. 依存関係のインストール

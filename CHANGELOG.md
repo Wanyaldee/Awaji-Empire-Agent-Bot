@@ -3,6 +3,14 @@
 このプロジェクトのすべての重要な変更は、このファイルに記録されます。
 形式は [Keep a Changelog](https://keepachangelog.com/ja/1.0.0/) に基づいています。
 
+## [1.2.1] - 2026-01-20
+
+### Fixed
+
+- cogs/voice_keeper.py: 常時稼働するよう修正。環境変数で稼働時間の設定が可能です。
+- **FEATURE_VOICE_KEEPER.md**: 説明を修正。
+- **README.md**: 環境変数の説明を修正。
+
 ## [1.2.0] - 2026-01-19
 
 ### Added
