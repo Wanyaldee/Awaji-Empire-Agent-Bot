@@ -7,7 +7,7 @@
 
 ### Fixed
 
-- cogs/voice_keeper.py: 常時稼働するよう修正。環境変数で稼働時間の設定が可能です。
+- **cogs/voice_keeper.py**: 常時稼働するよう修正。環境変数で稼働時間の設定が可能です。
 - **FEATURE_VOICE_KEEPER.md**: 説明を修正。
 - **README.md**: 環境変数の説明を修正。
 
