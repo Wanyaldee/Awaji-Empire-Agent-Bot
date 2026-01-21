@@ -23,6 +23,7 @@ class MyBot(commands.Bot):
         intents = discord.Intents.default()
         intents.members = True 
         intents.message_content = True 
+        intents.voice_states = True #20260120:寝落ち切断機能
         super().__init__(command_prefix='!', intents=intents)
 
     async def setup_hook(self):

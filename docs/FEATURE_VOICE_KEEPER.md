@@ -2,7 +2,7 @@
 
 ## 概要
 
-**Voice Keeper** は、配信終了後などの深夜帯に、ボイスチャンネル（VC）に残っている「寝落ちユーザー」を自動的に解散・切断する機能です。
+**Voice Keeper** は、配信終了後などの深夜帯に、ボイスチャンネル（VC）に残っている「寝落ちユーザー」を自動的に解散・切断する機能です。\
 特定のホスト（サーバー主など）が退出したことをトリガーとして作動し、自動切断した人数を集計してチャットチャンネルへ報告します。
 
 ## 動作フロー
@@ -45,6 +45,42 @@
 
 ## 開発者向け情報
 
-* **ファイル**: `cogs/voice_keeper.py`
+* **ファイル**: ~~`cogs/voice_keeper.py`~~ \
+`cogs/voice_keeper/main.py`
 * **主要メソッド**: `wait_and_disconnect`
 * **権限**: Botには `Move Members`（メンバーを移動）の権限が必要です。切断処理は `member.move_to(None)` で実装されています。
+
+---
+
+## 依存関係（モジュール構成）
+
+VoiceKeeperは「イベント/タスク管理」と「切断/報告処理」を分離し、
+共通処理（時間判定・型定義）は `common/` に切り出して再利用可能にしています。
+
+### 依存方向（重要）
+- `voice_keeper` → `common` の依存はOK
+- `common` → `voice_keeper` の依存は禁止（循環依存防止）
+
+### ディレクトリ構成（抜粋）
+
+- `cogs/voice_keeper/`
+  - `main.py` : Discordイベント監視・タイマー管理（いつ動くか）
+  - `services.py` : 切断処理・報告・監査ログ（何をするか）
+- `common/`
+  - `time_utils.py` : 稼働時間判定（純粋関数）
+  - `types.py` : `WatchKey` 等の共通型定義
+
+### 依存関係図（概念）
+
+```text
+bot.py
+  └─ loads extension: cogs.voice_keeper
+        ├─ cogs/voice_keeper/main.py
+        │     ├─ uses: common/time_utils.py
+        │     ├─ uses: common/types.py
+        │     └─ calls: cogs/voice_keeper/services.py
+        └─ cogs/voice_keeper/services.py
+              └─ (Discord操作: move_to / send などの副作用をここに集約)
+```
+
+![Voice Keeper Operation Flow](./assets/Voice_Keeper_component.png)
