@@ -3,6 +3,28 @@
 このプロジェクトのすべての重要な変更は、このファイルに記録されます。
 形式は [Keep a Changelog](https://keepachangelog.com/ja/1.0.0/) に基づいています。
 
+## [1.2.2] - 2026-01-21
+
+### Changed
+
+- bot.py: 26Lines intents.voice_states を追加。
+
+- **フォルダ構成変更**:  
+`cogs/voice_keeper.py` を `cogs/voice_keeper.py.example`に変更。  
+`cogs/voice_keeper/*` に`cogs/voice_keeper.py`の機能を格納。  
+`common/*` 追加。  
+
+- **FEATURE_VOICE_KEEPER.md**: 上記の修正による説明を修正、加筆。
+
+
+## [1.2.1] - 2026-01-20
+
+### Fixed
+
+- **cogs/voice_keeper.py**: 常時稼働するよう修正。環境変数で稼働時間の設定が可能です。
+- **FEATURE_VOICE_KEEPER.md**: 説明を修正。
+- **README.md**: 環境変数の説明を修正。
+
 ## [1.2.0] - 2026-01-19
 
 ### Added

@@ -52,9 +52,22 @@ DB_USER=bot_user
 DB_PASS=your_password
 
 # Discord OAuth2
-DISCORD_CLIENT_ID=1446462054423855144
+DISCORD_CLIENT_ID=bot_client_id
 DISCORD_CLIENT_SECRET=your_client_secret
 DISCORD_REDIRECT_URI=[https://dashboard.awajiempire.net/callback](https://dashboard.awajiempire.net/callback)
+
+# ★追加: 淡路帝国サーバーのID (数字のみ)
+DISCORD_GUILD_ID=server_id
+
+# Web Dashboard URL (Bot案内用)
+DASHBOARD_URL=https://dashboard.awajiempire.net
+
+# ★追加: AFK監視設定
+TARGET_USER_ID=target_user_id #監視対象ユーザー
+ACTIVE_START_HOUR=ACTIVE_START_HOUR #稼働開始時間
+ACTIVE_END_HOUR=ACTIVE_END_HOUR #稼働終了時間
+AFK_TIMEOUT_SECONDS=AFK_TIMEOUT_SECONDS #AFKタイムアウト時間（秒）
+REPORT_CHANNEL_NAME=REPORT_CHANNEL_NAME #レポート送信先チャンネル名
 ```
 
 ### 2. 依存関係のインストール
@@ -73,6 +86,11 @@ python bot.py
 python webapp.py
 ```
 
+## 共通ロジックの説明
+
+詳細な説明は[common/README.md](./common/README.md)を参照してください。
+
+
 ## 更新内容
 
 詳細な更新内容は[CHANGELOG.md](./CHANGELOG.md)
@@ -81,4 +99,4 @@ python webapp.py
 
 このプロジェクトは MIT ライセンスの下で公開されています。
 
-© 2025 Awaji Empire Technical Department
+© 2026 Awaji Empire Technical Department
